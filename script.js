@@ -14,17 +14,17 @@ function topCalculator() {
     clear.setAttribute("style", "background-color: #A0A0A0;");
     topRow.append(clear);
 
-    const negative = document.createElement("button");
-    negative.classList.add("btns", "negative");
-    negative.textContent = "+/-";
-    negative.setAttribute("style", "background-color: #A0A0A0;");
-    topRow.append(negative);
+    const backspace = document.createElement("button");
+    backspace.classList.add("btns", "backspace");
+    backspace.textContent = "DEL"
+    backspace.setAttribute("style", "background-color: #A0A0A0;");
+    topRow.append(backspace);
 
-    const percentage = document.createElement("button");
-    percentage.classList.add("btns", "percentage");
-    percentage.textContent = "%";
-    percentage.setAttribute("style", "background-color: #A0A0A0;");
-    topRow.append(percentage);
+    const plusMinus = document.createElement("button");
+    plusMinus.classList.add("btns", "plus-minus");
+    plusMinus.textContent = String.fromCharCode(177);
+    plusMinus.setAttribute("style", "background-color: #F69A06; color: white;");
+    topRow.append(plusMinus);
 }
 
 function numbers() {
@@ -41,7 +41,7 @@ function bottomCalculator() {
     const zero = document.createElement("button");
     zero.classList.add("btns", "button-0");
     zero.textContent = "0";
-    zero.setAttribute("style", "width: 150px; background-color: #313131; color: white;");
+    zero.setAttribute("style", "background-color: #313131; color: white;");
     bottomRow.append(zero);
 
     const decimal = document.createElement("button");
@@ -49,36 +49,36 @@ function bottomCalculator() {
     decimal.textContent = ".";
     decimal.setAttribute("style", "background-color: #313131; color: white;")
     bottomRow.append(decimal);
+
+    const equal = document.createElement("button");
+    equal.classList.add("btns", "equal");
+    equal.textContent = "=";
+    equal.setAttribute("style", "background-color: #F69A06; color: white");
+    bottomRow.append(equal);
 }
 
 function operators() {
     const division = document.createElement("button");
     division.classList.add("btns", "division");
-    division.textContent = "/";
+    division.textContent = String.fromCharCode(247);
     division.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(division);
 
     const multiply = document.createElement("button");
     multiply.classList.add("btns", "multiply");
-    multiply.textContent = "x";
+    multiply.textContent = String.fromCharCode(215);
     multiply.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(multiply);
 
     const subtract = document.createElement("button");
     subtract.classList.add("btns", "subtract");
-    subtract.textContent = "-";
+    subtract.textContent = String.fromCharCode(8722);
     subtract.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(subtract);
 
     const addition = document.createElement("button");
     addition.classList.add("btns", "addition");
     addition.textContent = "+";
-    addition.setAttribute("style", "background-color: #F69A06; color: white");
+    addition.setAttribute("style", "height: 150px; background-color: #F69A06; color: white");
     operator.append(addition);
-
-    const equal = document.createElement("button");
-    equal.classList.add("btns", "equal");
-    equal.textContent = "=";
-    equal.setAttribute("style", "background-color: #F69A06; color: white");
-    operator.append(equal);
 }
