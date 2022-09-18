@@ -29,7 +29,7 @@ body,html {
 
 .calculator {
     border: 1px solid black;
-    /* background-color: black; */
+    background-color: black;
     width: 500px;
     height: 750px;
     display: flex;
@@ -47,7 +47,33 @@ body,html {
 
 .calculator-num {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
+    width: 225px;
+}
+
+.bottom-calculator {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.operators {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.btns {
+    width: 75px;
+    height: 75px;
+    font-size: 20px;
+}
+
+.numbers {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap-reverse;
 }
