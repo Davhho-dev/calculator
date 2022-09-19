@@ -2,10 +2,22 @@ const topRow = document.querySelector(".top");
 const nums = document.querySelector(".numbers");
 const bottomRow = document.querySelector(".bottom");
 const operator = document.querySelector(".operators");
-topCalculator();
-numbers();
-bottomCalculator();
-operators();
+createCalculator();
+
+function createCalculator() {
+    topCalculator();
+    numbers();
+    bottomCalculator();
+    operators();
+}
+
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener("click", function(e) {
+        console.log(e.target.textContent);
+    });
+});
+
 
 function topCalculator() {
     const clear = document.createElement("button");

@@ -8,30 +8,19 @@ body,html {
     min-height: 100%;
 }
 
-.container-wrapper {
+body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.left-container,
-.right-container {
-    border: 1px solid black;
-    width: 1000px;
-    height: 1300px;
-}
-
-.left-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    gap: 25px;
 }
 
 .calculator {
-    border: 1px solid black;
     background-color: black;
+    border-radius: 25px;
     width: 500px;
-    height: 750px;
+    height: 650px;
     display: flex;
     flex-direction: column;
     align-items: center;
