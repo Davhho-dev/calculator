@@ -5,6 +5,8 @@ const operator = document.querySelector(".operators");
 const printNum = document.querySelector(".printNum");
 let numString = "";
 let num1 = 0;
+let num2 = 0;
+let secondOperand = false;
 createCalculator();
 
 function createCalculator() {
@@ -19,21 +21,24 @@ buttons.forEach((button) => {
     button.addEventListener("click", function(e) {
         let userInput = e.target.textContent;
         let className = e.target.className;
-        if(className === "btns clear") {
+        
+        if(className === "opSign clear") {
             printNum.innerHTML = ""; 
             numString = "";
+            num1 = 0;
+            console.log(numString);
         }
-        if(className === "btns backspace") {
+        if(className === "opSign backspace") {
             numString = numString.slice(0, -1);
             printNum.innerHTML = "";
             printNum.append(numString);
+            num1 = parseInt(numString);
             console.log(numString);
         }
-        if(className !== "btns clear" && className !== "btns backspace" && className !== "btns plus-minus" && className !== "btns division" && className !== "btns multiply" && className !== "btns subtract" && className !== "btns addition" && className !== "btns equal") {
+        if(!className.includes("opSign")) {
             numString += userInput;
             printNum.append(userInput);
-            console.log(userInput);
-            console.log(className);
+            num1 = parseInt(numString);
             console.log(numString);
         }
     });
@@ -42,19 +47,19 @@ buttons.forEach((button) => {
 
 function topCalculator() {
     const clear = document.createElement("button");
-    clear.classList.add("btns", "clear");
+    clear.classList.add("opSign", "clear");
     clear.textContent = "AC";
     clear.setAttribute("style", "background-color: #A0A0A0;");
     topRow.append(clear);
 
     const backspace = document.createElement("button");
-    backspace.classList.add("btns", "backspace");
+    backspace.classList.add("opSign", "backspace");
     backspace.textContent = "DEL"
     backspace.setAttribute("style", "background-color: #A0A0A0;");
     topRow.append(backspace);
 
     const plusMinus = document.createElement("button");
-    plusMinus.classList.add("btns", "plus-minus");
+    plusMinus.classList.add("opSign", "plus-minus");
     plusMinus.textContent = String.fromCharCode(177);
     plusMinus.setAttribute("style", "background-color: #F69A06; color: white;");
     topRow.append(plusMinus);
@@ -92,25 +97,25 @@ function bottomCalculator() {
 
 function operators() {
     const division = document.createElement("button");
-    division.classList.add("btns", "division");
+    division.classList.add("opSign", "division");
     division.textContent = String.fromCharCode(247);
     division.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(division);
 
     const multiply = document.createElement("button");
-    multiply.classList.add("btns", "multiply");
+    multiply.classList.add("opSign", "multiply");
     multiply.textContent = String.fromCharCode(215);
     multiply.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(multiply);
 
     const subtract = document.createElement("button");
-    subtract.classList.add("btns", "subtract");
+    subtract.classList.add("opSign", "subtract");
     subtract.textContent = String.fromCharCode(8722);
     subtract.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(subtract);
 
     const addition = document.createElement("button");
-    addition.classList.add("btns", "addition");
+    addition.classList.add("opSign", "addition");
     addition.textContent = "+";
     addition.setAttribute("style", "height: 150px; background-color: #F69A06; color: white");
     operator.append(addition);
