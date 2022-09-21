@@ -64,20 +64,21 @@ buttons.forEach((button) => {
             numString += userInput;
             printNum.append(userInput);
             num1 = parseFloat(numString);
-            console.log(numString);
+            console.log(`numString: ${numString}, num1: ${num1}`);
         }
         //if only number button selected and second operand selected (SECOND OPERAND SELECTOR)
         else if(!className.includes("opSign") && secondOperand) {
             if(!isEquality) {
                 numString2 += userInput;
                 num2 = parseFloat(numString2);
-                console.log(numString2);
                 printNum.textContent = `${numString} ${sign} ${numString2}`;
-                console.log(`num2 = ${num2}`);
+                console.log(`numString2: ${numString2}, num2: ${num2}`);
             }else {
-                numString += userInput;
+                console.log(`entered: ${userInput}`);
+                numString2 += userInput;
                 num2 = parseFloat(numString2);
-                printNumTop.textContent = `${num1} ${sign} ${num2}`;
+                printNumTop.textContent = `${numString} ${sign} ${numString2}`;
+                isEquality = false;
             }
         }
         //when operator is pressed
@@ -92,7 +93,9 @@ buttons.forEach((button) => {
             }else {
                 sign = userInput;
                 numString = result;
+                num1 = parseFloat(numString);
                 numString2 = "";
+                operations = className;
                 printNumTop.textContent = `${result}`;
                 printNum.textContent = `${result} ${sign}`;
             }
@@ -107,6 +110,7 @@ buttons.forEach((button) => {
                 printNum.textContent = result;
                 isEquality = true;
             }
+            console.log(`num1: ${num1}, num2: ${num2}`);
         }
     });
 });
