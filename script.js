@@ -4,9 +4,11 @@ const bottomRow = document.querySelector(".bottom");
 const operator = document.querySelector(".operators");
 const printNum = document.querySelector(".printNum");
 let numString = "";
+let numString2 = "";
 let num1 = 0;
 let num2 = 0;
 let secondOperand = false;
+let sign = "";
 createCalculator();
 
 function createCalculator() {
@@ -25,24 +27,48 @@ buttons.forEach((button) => {
         if(className === "opSign clear") {
             printNum.innerHTML = ""; 
             numString = "";
+            numString2 = "";
             num1 = 0;
+            num2 = 0;
+            secondOperand = false;
             console.log(numString);
         }
         if(className === "opSign backspace") {
-            numString = numString.slice(0, -1);
-            printNum.innerHTML = "";
-            printNum.append(numString);
-            num1 = parseInt(numString);
-            console.log(numString);
+            if(!secondOperand) {
+                numString = numString.slice(0, -1);
+                printNum.innerHTML = "";
+                printNum.append(numString);
+                num1 = parseInt(numString);
+                console.log(numString);
+            }else {
+                numString2 = numString2.slice(0, -1);
+                printNum.innerHTML = "";
+                printNum.append(numString2);
+                num2 = parseInt(numString2);
+                console.log(numString2);
+            }
         }
-        if(!className.includes("opSign")) {
+        if(!className.includes("opSign") && !secondOperand) {
             numString += userInput;
             printNum.append(userInput);
             num1 = parseInt(numString);
             console.log(numString);
+        }else if(!className.includes("opSign") && secondOperand) {
+            numString2 += userInput;
+            num2 = parseInt(numString2);
+            console.log(`num2 = ${num2}`);
+        }
+        if(className.includes("opSign") && !(className.includes("clear") || className.includes("backspace"))) {
+            secondOperand = true;
+            sign = className;
+            console.log(sign);
         }
     });
 });
+
+function addition(x, y) {
+    return x + y;
+}
 
 
 function topCalculator() {
@@ -89,7 +115,7 @@ function bottomCalculator() {
     bottomRow.append(decimal);
 
     const equal = document.createElement("button");
-    equal.classList.add("btns", "equal");
+    equal.classList.add("opSign", "equal");
     equal.textContent = "=";
     equal.setAttribute("style", "background-color: #F69A06; color: white");
     bottomRow.append(equal);
