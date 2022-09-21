@@ -9,8 +9,10 @@ let numString2 = "";
 let num1 = 0;
 let num2 = 0;
 let operation = "";
+let isEquality = false;
 let secondOperand = false;
 let sign = "";
+let result = null;
 createCalculator();
 
 function createCalculator() {
@@ -25,7 +27,8 @@ buttons.forEach((button) => {
     button.addEventListener("click", function(e) {
         let userInput = e.target.textContent;
         let className = e.target.className;
-        let result = null;
+
+        //when clear is pressed
         if(className === "opSign clear") {
             printNum.innerHTML = ""; 
             printNumTop.innerHTML = "";
@@ -36,44 +39,74 @@ buttons.forEach((button) => {
             secondOperand = false;
             console.log(numString);
         }
+        
+        //when deleting a number
         if(className === "opSign backspace") {
+            //when second operand hasn't been selected
             if(!secondOperand) {
                 numString = numString.slice(0, -1);
                 printNum.innerHTML = "";
                 printNum.append(numString);
-                num1 = parseInt(numString);
+                num1 = parseFloat(numString);
                 console.log(numString);
-            }else {
+            }
+            //when second operand has been selected
+            else {
                 numString2 = numString2.slice(0, -1);
                 printNum.innerHTML = "";
                 printNum.textContent = `${numString} ${sign} ${numString2}`;
-                num2 = parseInt(numString2);
+                num2 = parseFloat(numString2);
                 console.log(numString2);
             }
         }
+        //if only number button selected and second operand hasn't been chosen (FIRST OPERAND SELECTOR)
         if(!className.includes("opSign") && !secondOperand) {
             numString += userInput;
             printNum.append(userInput);
-            num1 = parseInt(numString);
+            num1 = parseFloat(numString);
             console.log(numString);
-        }else if(!className.includes("opSign") && secondOperand) {
-            numString2 += userInput;
-            num2 = parseInt(numString2);
-            printNum.textContent = `${num1} ${sign} ${num2}`;
-            console.log(`num2 = ${num2}`);
         }
+        //if only number button selected and second operand selected (SECOND OPERAND SELECTOR)
+        else if(!className.includes("opSign") && secondOperand) {
+            if(!isEquality) {
+                numString2 += userInput;
+                num2 = parseFloat(numString2);
+                printNum.textContent = `${num1} ${sign} ${num2}`;
+                console.log(`num2 = ${num2}`);
+            }else {
+                console.log(userInput);
+                numString += userInput;
+                num2 = parseFloat(numString2);
+                printNumTop.textContent = `${num1} ${sign} ${num2}`;
+            }
+        }
+        //when operator is pressed
         if(className.includes("opSign") && !(className.includes("clear") || className.includes("backspace") || className.includes("equal"))) {
-            secondOperand = true;
-            sign = userInput;
-            operations = className;
-            printNum.textContent = `${num1} ${sign}`;
-            console.log(userInput);
+            if(!isEquality) {
+                secondOperand = true;
+                sign = userInput;
+                operations = className;
+                console.log(`operator pressed: ${num1}`);
+                printNum.textContent = `${num1} ${sign}`;
+                console.log(userInput);
+            }else {
+                sign = userInput;
+                numString = result;
+                numString2 = "";
+                printNumTop.textContent = `${result}`;
+                printNum.textContent = `${result} ${sign}`;
+            }
         }
+        //when equal is pressed
         if(className.includes("equal") && secondOperand) {
-            result = performOperations(operations, num1, num2);
-            console.log(result);
-            printNumTop.textContent = `${numString} ${sign} ${numString2} =`;
-            printNum.textContent = result;
+            //equal pressed for the first time
+            if(!isEquality) {
+                result = performOperations(operations, num1, num2);
+                console.log(result);
+                printNumTop.textContent = `${numString} ${sign} ${numString2} =`;
+                printNum.textContent = result;
+                isEquality = true;
+            }
         }
     });
 });
