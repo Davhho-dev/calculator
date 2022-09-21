@@ -32,6 +32,10 @@ body {
     width: 450px;
     height: 100px;
     border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    text-align: right;
 }
 
 .calculator-num {
@@ -61,10 +65,19 @@ body {
     font-size: 20px;
 }
 
-
 .numbers {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap-reverse;
+}
+
+.printNum {
+    margin: 10px;
+    font-size: 30px;
+}
+
+.printNumTop {
+    margin: 10px;
+    font-size: 15px;
 }

@@ -3,10 +3,12 @@ const nums = document.querySelector(".numbers");
 const bottomRow = document.querySelector(".bottom");
 const operator = document.querySelector(".operators");
 const printNum = document.querySelector(".printNum");
+const printNumTop = document.querySelector(".printNumTop");
 let numString = "";
 let numString2 = "";
 let num1 = 0;
 let num2 = 0;
+let operation = "";
 let secondOperand = false;
 let sign = "";
 createCalculator();
@@ -23,9 +25,10 @@ buttons.forEach((button) => {
     button.addEventListener("click", function(e) {
         let userInput = e.target.textContent;
         let className = e.target.className;
-        
+        let result = null;
         if(className === "opSign clear") {
             printNum.innerHTML = ""; 
+            printNumTop.innerHTML = "";
             numString = "";
             numString2 = "";
             num1 = 0;
@@ -43,7 +46,7 @@ buttons.forEach((button) => {
             }else {
                 numString2 = numString2.slice(0, -1);
                 printNum.innerHTML = "";
-                printNum.append(numString2);
+                printNum.textContent = `${numString} ${sign} ${numString2}`;
                 num2 = parseInt(numString2);
                 console.log(numString2);
             }
@@ -56,18 +59,47 @@ buttons.forEach((button) => {
         }else if(!className.includes("opSign") && secondOperand) {
             numString2 += userInput;
             num2 = parseInt(numString2);
+            printNum.textContent = `${num1} ${sign} ${num2}`;
             console.log(`num2 = ${num2}`);
         }
-        if(className.includes("opSign") && !(className.includes("clear") || className.includes("backspace"))) {
+        if(className.includes("opSign") && !(className.includes("clear") || className.includes("backspace") || className.includes("equal"))) {
             secondOperand = true;
-            sign = className;
-            console.log(sign);
+            sign = userInput;
+            operations = className;
+            printNum.textContent = `${num1} ${sign}`;
+            console.log(userInput);
+        }
+        if(className.includes("equal") && secondOperand) {
+            result = performOperations(operations, num1, num2);
+            console.log(result);
+            printNumTop.textContent = `${numString} ${sign} ${numString2} =`;
+            printNum.textContent = result;
         }
     });
 });
 
+function performOperations(operator, x, y) {
+    if(operator.includes("addition")) return addition(x, y);
+    else if(operator.includes("subtract")) return subtraction(x, y);
+    else if(operator.includes("multiply")) return multiplication(x, y);
+    else return division(x, y);
+}
+
+
 function addition(x, y) {
     return x + y;
+}
+
+function subtraction(x, y) {
+    return x - y;
+}
+
+function multiplication(x, y) {
+    return x * y;
+}
+
+function division(x, y) {
+    return x / y;
 }
 
 
