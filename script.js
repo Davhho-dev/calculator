@@ -2,6 +2,9 @@ const topRow = document.querySelector(".top");
 const nums = document.querySelector(".numbers");
 const bottomRow = document.querySelector(".bottom");
 const operator = document.querySelector(".operators");
+const printNum = document.querySelector(".printNum");
+let numString = "";
+let num1 = 0;
 createCalculator();
 
 function createCalculator() {
@@ -14,7 +17,25 @@ function createCalculator() {
 const buttons = document.querySelectorAll("button");
 buttons.forEach((button) => {
     button.addEventListener("click", function(e) {
-        console.log(e.target.textContent);
+        let userInput = e.target.textContent;
+        let className = e.target.className;
+        if(className === "btns clear") {
+            printNum.innerHTML = ""; 
+            numString = "";
+        }
+        if(className === "btns backspace") {
+            numString = numString.slice(0, -1);
+            printNum.innerHTML = "";
+            printNum.append(numString);
+            console.log(numString);
+        }
+        if(className !== "btns clear" && className !== "btns backspace" && className !== "btns plus-minus" && className !== "btns division" && className !== "btns multiply" && className !== "btns subtract" && className !== "btns addition" && className !== "btns equal") {
+            numString += userInput;
+            printNum.append(userInput);
+            console.log(userInput);
+            console.log(className);
+            console.log(numString);
+        }
     });
 });
 
