@@ -71,10 +71,10 @@ buttons.forEach((button) => {
             if(!isEquality) {
                 numString2 += userInput;
                 num2 = parseFloat(numString2);
-                printNum.textContent = `${num1} ${sign} ${num2}`;
+                console.log(numString2);
+                printNum.textContent = `${numString} ${sign} ${numString2}`;
                 console.log(`num2 = ${num2}`);
             }else {
-                console.log(userInput);
                 numString += userInput;
                 num2 = parseFloat(numString2);
                 printNumTop.textContent = `${num1} ${sign} ${num2}`;
