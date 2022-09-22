@@ -1,5 +1,6 @@
-//Division by 0 display error message
-//need to be able to operate multiple times within one setting
+//Figure out how to resolve the issue regarding multiline operations.
+
+
 
 const topRow = document.querySelector(".top");
 const nums = document.querySelector(".numbers");
@@ -15,7 +16,9 @@ let num1 = 0;
 let num2 = 0;
 let userOperator = "";
 let operatorClassName = "";
+let multiOperator = false;
 let result = 0;
+let operatorCounter = 0;
 createCalculator();
 
 function createCalculator() {
@@ -35,23 +38,38 @@ numBtns.forEach((button) => {
             if(waitSecOperand) {
                 numString1 += userInput;
                 num1 = parseFloat(numString1);
+                stringCombine += userInput;
                 //console.log(`numString1: ${numString1}; num1: ${num1}`);
                 printBottom.textContent = numString1;
             }else {
-                numString2 += userInput;
-                num2 = parseFloat(numString2);
-                //console.log(`numString2: ${numString2}; num2: ${num2}`);
-                stringCombine = `${numString1} ${userOperator} ${numString2}`;
-                printBottom.textContent = stringCombine;
+                if(operatorCounter < 2) {
+                    numString2 += userInput;
+                    num2 = parseFloat(numString2);
+                    //console.log(`numString2: ${numString2}; num2: ${num2}`);
+                    stringCombine = `${numString1} ${userOperator} ${numString2}`;
+                    printBottom.textContent = stringCombine;
+                }else {
+                    stringCombine += ` ${userInput}`;
+                    printBottom.textContent = stringCombine;
+                }
             }
         }
         //if operator is selected
         else {
             if(buttonType !== "opSign clear" && buttonType !== "opSign backspace" && buttonType != "opSign plus-minus" && buttonType !== "opSign equal") {
                 userOperator = userInput;
+                stringCombine += ` ${userOperator}`;
                 operatorClassName = buttonType; //saves operator class
                 waitSecOperand = false;     //not waiting for 2nd number
-                printBottom.textContent = `${numString1} ${userOperator}`;
+                printBottom.textContent = stringCombine;
+                operatorCounter = operatorCount(stringCombine);
+                if(operatorCounter >= 2) {
+                    console.log(`counter: ${operatorCounter}`);
+                    let temp = performOperations(operatorClassName);
+                    console.log(operatorClassName);
+                    console.log(num1);
+                    console.log(temp);
+                }
             }
             //equal operator selected
             if(buttonType === "opSign equal") {
@@ -73,10 +91,13 @@ numBtns.forEach((button) => {
                 userOperator = "";
                 operatorClassName = "";
                 waitSecOperand = true;
+                operatorCounter = 0;
             }
+            //deleting a number
             if(buttonType.includes("backspace")) {
                 if(waitSecOperand) {
                     numString1 = numString1.slice(0, -1);
+                    stringCombine = stringCombine.slice(0, -1);
                     num1 = parseFloat(numString1);
                     printBottom.textContent = numString1;
                 }else {
@@ -98,6 +119,17 @@ function performOperations(operator) {
     if(operator.includes("subtraction")) return subtraction(num1, num2);
     if(operator.includes("multiplication")) return multiplication(num1, num2);
     else return division(num1, num2);
+}
+
+//count how many operators in the string
+function operatorCount(str) {
+    let counter = 0;
+    for(let i = 0; i < str.length; i++) {
+        if(str.charAt(i) === String.fromCharCode(247) || str.charAt(i) === String.fromCharCode(215) || str.charAt(i) === String.fromCharCode(8722) || str.charAt(i) === "+") {
+            counter++;
+        }
+    }
+    return counter;
 }
 
 function addition(x, y) {
