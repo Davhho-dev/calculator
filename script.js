@@ -1,18 +1,21 @@
+//Division by 0 display error message
+//need to be able to operate multiple times within one setting
+
 const topRow = document.querySelector(".top");
 const nums = document.querySelector(".numbers");
 const bottomRow = document.querySelector(".bottom");
 const operator = document.querySelector(".operators");
-const printNum = document.querySelector(".printNum");
-const printNumTop = document.querySelector(".printNumTop");
-let numString = "";
+const printBottom = document.querySelector(".printNum");
+const printTop = document.querySelector(".printNumTop");
+let waitSecOperand = true;
+let numString1 = "";
 let numString2 = "";
+let stringCombine = "";
 let num1 = 0;
 let num2 = 0;
-let operation = "";
-let isEquality = false;
-let secondOperand = false;
-let sign = "";
-let result = null;
+let userOperator = "";
+let operatorClassName = "";
+let result = 0;
 createCalculator();
 
 function createCalculator() {
@@ -22,106 +25,80 @@ function createCalculator() {
     operators();
 }
 
-const buttons = document.querySelectorAll("button");
-buttons.forEach((button) => {
-    button.addEventListener("click", function(e) {
+const numBtns = document.querySelectorAll("button");
+numBtns.forEach((button) => {
+    button.addEventListener("click", (e) => {
         let userInput = e.target.textContent;
-        let className = e.target.className;
-
-        //when clear is pressed
-        if(className === "opSign clear") {
-            printNum.innerHTML = ""; 
-            printNumTop.innerHTML = "";
-            numString = "";
-            numString2 = "";
-            num1 = 0;
-            num2 = 0;
-            secondOperand = false;
-            console.log(numString);
-        }
-        
-        //when deleting a number
-        if(className === "opSign backspace") {
-            //when second operand hasn't been selected
-            if(!secondOperand) {
-                numString = numString.slice(0, -1);
-                printNum.innerHTML = "";
-                printNum.append(numString);
-                num1 = parseFloat(numString);
-                console.log(numString);
-            }
-            //when second operand has been selected
-            else {
-                numString2 = numString2.slice(0, -1);
-                printNum.innerHTML = "";
-                printNum.textContent = `${numString} ${sign} ${numString2}`;
-                num2 = parseFloat(numString2);
-                console.log(numString2);
-            }
-        }
-        //if only number button selected and second operand hasn't been chosen (FIRST OPERAND SELECTOR)
-        if(!className.includes("opSign") && !secondOperand) {
-            numString += userInput;
-            printNum.append(userInput);
-            num1 = parseFloat(numString);
-            console.log(`numString: ${numString}, num1: ${num1}`);
-        }
-        //if only number button selected and second operand selected (SECOND OPERAND SELECTOR)
-        else if(!className.includes("opSign") && secondOperand) {
-            if(!isEquality) {
+        let buttonType = e.target.className; //determine if num or operators btns
+        //if first operand selected
+        if(!buttonType.includes("opSign")) {
+            if(waitSecOperand) {
+                numString1 += userInput;
+                num1 = parseFloat(numString1);
+                //console.log(`numString1: ${numString1}; num1: ${num1}`);
+                printBottom.textContent = numString1;
+            }else {
                 numString2 += userInput;
                 num2 = parseFloat(numString2);
-                printNum.textContent = `${numString} ${sign} ${numString2}`;
-                console.log(`numString2: ${numString2}, num2: ${num2}`);
-            }else {
-                console.log(`entered: ${userInput}`);
-                numString2 += userInput;
-                num2 = parseFloat(numString2);
-                printNumTop.textContent = `${numString} ${sign} ${numString2}`;
-                isEquality = false;
+                //console.log(`numString2: ${numString2}; num2: ${num2}`);
+                stringCombine = `${numString1} ${userOperator} ${numString2}`;
+                printBottom.textContent = stringCombine;
             }
         }
-        //when operator is pressed
-        if(className.includes("opSign") && !(className.includes("clear") || className.includes("backspace") || className.includes("equal"))) {
-            if(!isEquality) {
-                secondOperand = true;
-                sign = userInput;
-                operations = className;
-                console.log(`operator pressed: ${num1}`);
-                printNum.textContent = `${num1} ${sign}`;
-                console.log(userInput);
-            }else {
-                sign = userInput;
-                numString = result;
-                num1 = parseFloat(numString);
-                numString2 = "";
-                operations = className;
-                printNumTop.textContent = `${result}`;
-                printNum.textContent = `${result} ${sign}`;
+        //if operator is selected
+        else {
+            if(buttonType !== "opSign clear" && buttonType !== "opSign backspace" && buttonType != "opSign plus-minus" && buttonType !== "opSign equal") {
+                userOperator = userInput;
+                operatorClassName = buttonType; //saves operator class
+                waitSecOperand = false;     //not waiting for 2nd number
+                printBottom.textContent = `${numString1} ${userOperator}`;
             }
-        }
-        //when equal is pressed
-        if(className.includes("equal") && secondOperand) {
-            //equal pressed for the first time
-            if(!isEquality) {
-                result = performOperations(operations, num1, num2);
+            //equal operator selected
+            if(buttonType === "opSign equal") {
+                result = performOperations(operatorClassName);
+                stringCombine += " =";
+                printTop.textContent = stringCombine;
+                printBottom.textContent = result;
+                console.log(buttonType);
                 console.log(result);
-                printNumTop.textContent = `${numString} ${sign} ${numString2} =`;
-                printNum.textContent = result;
-                isEquality = true;
             }
-            console.log(`num1: ${num1}, num2: ${num2}`);
+            if(buttonType.includes("clear")) {
+                printTop.innerHTML = "";
+                printBottom.innerHTML = "";
+                numString1 = "";
+                numString2 = "";
+                num1 = 0;
+                num2 = 0;
+                stringCombine = "";
+                userOperator = "";
+                operatorClassName = "";
+                waitSecOperand = true;
+            }
+            if(buttonType.includes("backspace")) {
+                if(waitSecOperand) {
+                    numString1 = numString1.slice(0, -1);
+                    num1 = parseFloat(numString1);
+                    printBottom.textContent = numString1;
+                }else {
+                    numString2 = numString2.slice(0, -1);
+                    stringCombine = stringCombine.slice(0, -1);
+                    num2 = parseFloat(numString2);
+                    printBottom.textContent = stringCombine;
+                    console.log("hello");
+                    console.log(`numString2 ${numString2}; stringCombine: ${stringCombine}; num2: ${num2}`);
+                }
+            }
         }
+        console.log(`numString1: ${numString1}; numString2: ${numString2}; num1: ${num1}; num2: ${num2}; stringCombine: ${stringCombine}; userOperator: ${userOperator}; operatorClassName: ${operatorClassName}; waitSecOperand: ${waitSecOperand}`);
     });
 });
 
-function performOperations(operator, x, y) {
-    if(operator.includes("addition")) return addition(x, y);
-    else if(operator.includes("subtract")) return subtraction(x, y);
-    else if(operator.includes("multiply")) return multiplication(x, y);
-    else return division(x, y);
+function performOperations(operator) {
+    if(operator.includes("addition")) return addition(num1, num2);
+    if(operator.includes("subtraction")) return subtraction(num1, num2);
+    if(operator.includes("multiplication")) return multiplication(num1, num2);
+    else return division(num1, num2);
 }
-
 
 function addition(x, y) {
     return x + y;
@@ -198,13 +175,13 @@ function operators() {
     operator.append(division);
 
     const multiply = document.createElement("button");
-    multiply.classList.add("opSign", "multiply");
+    multiply.classList.add("opSign", "multiplication");
     multiply.textContent = String.fromCharCode(215);
     multiply.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(multiply);
 
     const subtract = document.createElement("button");
-    subtract.classList.add("opSign", "subtract");
+    subtract.classList.add("opSign", "subtraction");
     subtract.textContent = String.fromCharCode(8722);
     subtract.setAttribute("style", "background-color: #F69A06; color: white");
     operator.append(subtract);
