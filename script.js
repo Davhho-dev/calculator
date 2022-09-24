@@ -47,7 +47,6 @@ numBtns.forEach((button) => {
                     stringCombine = `${numString1} ${userOperator} ${numString2} `;
                     printBottom.textContent = stringCombine;
                     result = performOperations(operatorClassName);
-                    // // if(num2 != NaN) num1 = result;
                     num1 = result;
                 }else {
                     stringCombine += userInput;
@@ -101,6 +100,8 @@ numBtns.forEach((button) => {
                     stringCombine = stringCombine.slice(0, -2);
                     num2 = parseFloat(numString2);
                     printBottom.textContent = stringCombine;
+                    num1 = parseFloat(numString1);
+                    result = performOperations(operatorClassName);
                 }
             }
         }
