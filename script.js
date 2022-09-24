@@ -39,46 +39,41 @@ numBtns.forEach((button) => {
                 numString1 += userInput;
                 num1 = parseFloat(numString1);
                 stringCombine += userInput;
-                //console.log(`numString1: ${numString1}; num1: ${num1}`);
                 printBottom.textContent = numString1;
             }else {
                 if(operatorCounter < 2) {
                     numString2 += userInput;
                     num2 = parseFloat(numString2);
-                    //console.log(`numString2: ${numString2}; num2: ${num2}`);
-                    stringCombine = `${numString1} ${userOperator} ${numString2}`;
+                    stringCombine = `${numString1} ${userOperator} ${numString2} `;
                     printBottom.textContent = stringCombine;
+                    result = performOperations(operatorClassName);
+                    // // if(num2 != NaN) num1 = result;
+                    num1 = result;
                 }else {
-                    stringCombine += ` ${userInput}`;
+                    stringCombine += userInput;
                     printBottom.textContent = stringCombine;
+                    num2 = parseFloat(userInput);
+                    console.log("test");
+                    num1 = result;
+                    result = performOperations(operatorClassName);
                 }
             }
         }
         //if operator is selected
         else {
             if(buttonType !== "opSign clear" && buttonType !== "opSign backspace" && buttonType != "opSign plus-minus" && buttonType !== "opSign equal") {
-                userOperator = userInput;
-                stringCombine += ` ${userOperator}`;
-                operatorClassName = buttonType; //saves operator class
-                waitSecOperand = false;     //not waiting for 2nd number
-                printBottom.textContent = stringCombine;
-                operatorCounter = operatorCount(stringCombine);
-                if(operatorCounter >= 2) {
-                    console.log(`counter: ${operatorCounter}`);
-                    let temp = performOperations(operatorClassName);
-                    console.log(operatorClassName);
-                    console.log(num1);
-                    console.log(temp);
-                }
+                    userOperator = userInput;
+                    stringCombine += ` ${userOperator} `;
+                    operatorClassName = buttonType; //saves operator class
+                    operatorCounter = operatorCount(stringCombine);
+                    waitSecOperand = false;     //not waiting for 2nd number
+                    printBottom.textContent = stringCombine;
             }
             //equal operator selected
             if(buttonType === "opSign equal") {
-                result = performOperations(operatorClassName);
                 stringCombine += " =";
                 printTop.textContent = stringCombine;
                 printBottom.textContent = result;
-                console.log(buttonType);
-                console.log(result);
             }
             if(buttonType.includes("clear")) {
                 printTop.innerHTML = "";
@@ -92,6 +87,7 @@ numBtns.forEach((button) => {
                 operatorClassName = "";
                 waitSecOperand = true;
                 operatorCounter = 0;
+                result = 0;
             }
             //deleting a number
             if(buttonType.includes("backspace")) {
@@ -102,17 +98,16 @@ numBtns.forEach((button) => {
                     printBottom.textContent = numString1;
                 }else {
                     numString2 = numString2.slice(0, -1);
-                    stringCombine = stringCombine.slice(0, -1);
+                    stringCombine = stringCombine.slice(0, -2);
                     num2 = parseFloat(numString2);
                     printBottom.textContent = stringCombine;
-                    console.log("hello");
-                    console.log(`numString2 ${numString2}; stringCombine: ${stringCombine}; num2: ${num2}`);
                 }
             }
         }
-        console.log(`numString1: ${numString1}; numString2: ${numString2}; num1: ${num1}; num2: ${num2}; stringCombine: ${stringCombine}; userOperator: ${userOperator}; operatorClassName: ${operatorClassName}; waitSecOperand: ${waitSecOperand}`);
+        console.log(`numString1: ${numString1}; numString2: ${numString2}; num1: ${num1}; num2: ${num2}; stringCombine: ${stringCombine}; userOperator: ${userOperator}; operatorClassName: ${operatorClassName}; waitSecOperand: ${waitSecOperand}; result: ${result}; operatorCounter: ${operatorCounter}`);
     });
 });
+
 
 function performOperations(operator) {
     if(operator.includes("addition")) return addition(num1, num2);
