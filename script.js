@@ -47,7 +47,7 @@ numBtns.forEach((button) => {
                     stringCombine = `${numString1} ${userOperator} ${numString2}`;
                     printBottom.textContent = stringCombine;
                     result = performOperations(operatorClassName, num1, num2);
-                    num1 = result;
+                    // num1 = result;
                 }else {
                     numString2 += userInput; //test
                     stringCombine += userInput;
