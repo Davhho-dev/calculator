@@ -1,4 +1,4 @@
-//Figure out how to resolve the issue regarding multiline operations.
+//Figure out how to retain the first operand when adding an additional number to a multiline calculation.
 
 
 
@@ -44,17 +44,17 @@ numBtns.forEach((button) => {
                 if(operatorCounter < 2) {
                     numString2 += userInput;
                     num2 = parseFloat(numString2);
-                    stringCombine = `${numString1} ${userOperator} ${numString2} `;
+                    stringCombine = `${numString1} ${userOperator} ${numString2}`;
                     printBottom.textContent = stringCombine;
-                    result = performOperations(operatorClassName);
+                    result = performOperations(operatorClassName, num1, num2);
                     num1 = result;
                 }else {
+                    numString2 += userInput; //test
                     stringCombine += userInput;
                     printBottom.textContent = stringCombine;
-                    num2 = parseFloat(userInput);
-                    console.log("test");
-                    num1 = result;
-                    result = performOperations(operatorClassName);
+                    num2 = parseFloat(numString2);
+                    result = performOperations(operatorClassName, num1, num2);
+                    // num1 = result;
                 }
             }
         }
@@ -64,9 +64,16 @@ numBtns.forEach((button) => {
                     userOperator = userInput;
                     stringCombine += ` ${userOperator} `;
                     operatorClassName = buttonType; //saves operator class
-                    operatorCounter = operatorCount(stringCombine);
+                    operatorCounter = operatorCount(stringCombine, num1, num2);
                     waitSecOperand = false;     //not waiting for 2nd number
                     printBottom.textContent = stringCombine;
+                    numString2 = "";//test
+
+                    //test
+                    if(operatorCounter >= 3) {
+                        console.log("testing");
+                        num1 = result;
+                    }
             }
             //equal operator selected
             if(buttonType === "opSign equal") {
@@ -96,12 +103,23 @@ numBtns.forEach((button) => {
                     num1 = parseFloat(numString1);
                     printBottom.textContent = numString1;
                 }else {
-                    numString2 = numString2.slice(0, -1);
-                    stringCombine = stringCombine.slice(0, -2);
-                    num2 = parseFloat(numString2);
-                    printBottom.textContent = stringCombine;
-                    num1 = parseFloat(numString1);
-                    result = performOperations(operatorClassName);
+                    if(operatorCounter < 2) {
+                        numString2 = numString2.slice(0, -1);
+                        stringCombine = stringCombine.slice(0, -1);
+                        num2 = parseFloat(numString2);
+                        printBottom.textContent = stringCombine;
+                        console.log(`result: ${result}`);
+                        num1 = parseFloat(numString1);
+                        console.log(`num1: ${num1}`);
+                        result = performOperations(operatorClassName, num1, num2);
+                        num1 = result;
+                    }else {
+                        numString2 = numString2.slice(0, -1);
+                        stringCombine = stringCombine.slice(0, -1);
+                        num2 = parseFloat(numString2);
+                        printBottom.textContent = stringCombine;
+                        result = performOperations(operatorClassName, num1, num2);
+                    }
                 }
             }
         }
@@ -110,11 +128,11 @@ numBtns.forEach((button) => {
 });
 
 
-function performOperations(operator) {
-    if(operator.includes("addition")) return addition(num1, num2);
-    if(operator.includes("subtraction")) return subtraction(num1, num2);
-    if(operator.includes("multiplication")) return multiplication(num1, num2);
-    else return division(num1, num2);
+function performOperations(operator, x, y) {
+    if(operator.includes("addition")) return addition(x, y);
+    if(operator.includes("subtraction")) return subtraction(x, y);
+    if(operator.includes("multiplication")) return multiplication(x, y);
+    else return division(x, y);
 }
 
 //count how many operators in the string
