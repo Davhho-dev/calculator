@@ -1,4 +1,4 @@
-//Figure out how to retain the first operand when adding an additional number to a multiline calculation.
+//I believe the calculations should be figured out when an operator is selected.
 
 
 
@@ -49,6 +49,7 @@ numBtns.forEach((button) => {
                     result = performOperations(operatorClassName, num1, num2);
                     // num1 = result;
                 }else {
+                    // num1 = result;
                     numString2 += userInput; //test
                     stringCombine += userInput;
                     printBottom.textContent = stringCombine;
@@ -64,10 +65,15 @@ numBtns.forEach((button) => {
                     userOperator = userInput;
                     stringCombine += ` ${userOperator} `;
                     operatorClassName = buttonType; //saves operator class
-                    operatorCounter = operatorCount(stringCombine, num1, num2);
+                    operatorCounter = operatorCount(stringCombine);
                     waitSecOperand = false;     //not waiting for 2nd number
                     printBottom.textContent = stringCombine;
                     numString2 = "";//test
+
+                    if(operatorCounter == 2) {
+                        num1 = result;
+                        result = performOperations(operatorClassName, num1, num2);
+                    }
 
                     //test
                     if(operatorCounter >= 3) {
