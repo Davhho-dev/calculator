@@ -1,7 +1,3 @@
-//I believe the calculations should be figured out when an operator is selected.
-
-
-
 const topRow = document.querySelector(".top");
 const nums = document.querySelector(".numbers");
 const bottomRow = document.querySelector(".bottom");
@@ -16,7 +12,7 @@ let num1 = 0;
 let num2 = 0;
 let userOperator = "";
 let operatorClassName = "";
-let multiOperator = false;
+let numSelected = false;
 let result = 0;
 let operatorCounter = 0;
 createCalculator();
@@ -40,6 +36,7 @@ numBtns.forEach((button) => {
                 num1 = parseFloat(numString1);
                 stringCombine += userInput;
                 printBottom.textContent = numString1;
+                numSelected = true;
             }else {
                 if(operatorCounter < 2) {
                     numString2 += userInput;
@@ -47,42 +44,36 @@ numBtns.forEach((button) => {
                     stringCombine = `${numString1} ${userOperator} ${numString2}`;
                     printBottom.textContent = stringCombine;
                     result = performOperations(operatorClassName, num1, num2);
-                    // num1 = result;
                 }else {
-                    // num1 = result;
-                    numString2 += userInput; //test
+                    numString2 += userInput;
                     stringCombine += userInput;
                     printBottom.textContent = stringCombine;
                     num2 = parseFloat(numString2);
                     result = performOperations(operatorClassName, num1, num2);
-                    // num1 = result;
                 }
             }
         }
         //if operator is selected
         else {
-            if(buttonType !== "opSign clear" && buttonType !== "opSign backspace" && buttonType != "opSign plus-minus" && buttonType !== "opSign equal") {
-                    userOperator = userInput;
-                    stringCombine += ` ${userOperator} `;
-                    operatorClassName = buttonType; //saves operator class
-                    operatorCounter = operatorCount(stringCombine);
-                    waitSecOperand = false;     //not waiting for 2nd number
-                    printBottom.textContent = stringCombine;
-                    numString2 = "";//test
+            if(buttonType !== "opSign clear" && buttonType !== "opSign backspace" && buttonType != "opSign plus-minus" && buttonType !== "opSign equal" && numSelected) {
+                userOperator = userInput;
+                stringCombine += ` ${userOperator} `;
+                operatorClassName = buttonType; //saves operator class
+                operatorCounter = operatorCount(stringCombine);
+                waitSecOperand = false;     //not waiting for 2nd number
+                printBottom.textContent = stringCombine;
+                numString2 = "";
 
-                    if(operatorCounter == 2) {
-                        num1 = result;
-                        result = performOperations(operatorClassName, num1, num2);
-                    }
-
-                    //test
-                    if(operatorCounter >= 3) {
-                        console.log("testing");
-                        num1 = result;
-                    }
+                if(operatorCounter == 2) {
+                    num1 = result;
+                    result = performOperations(operatorClassName, num1, num2);
+                }
+                if(operatorCounter >= 3) {
+                    num1 = result;
+                }
             }
             //equal operator selected
-            if(buttonType === "opSign equal") {
+            if(buttonType === "opSign equal" && numSelected) {
                 stringCombine += " =";
                 printTop.textContent = stringCombine;
                 printBottom.textContent = result;
@@ -100,6 +91,7 @@ numBtns.forEach((button) => {
                 waitSecOperand = true;
                 operatorCounter = 0;
                 result = 0;
+                numSelected = false;
             }
             //deleting a number
             if(buttonType.includes("backspace")) {
