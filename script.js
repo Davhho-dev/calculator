@@ -134,10 +134,20 @@ numBtns.forEach((button) => {
                         printBottom.textContent = stringCombine;
                         result = performOperations(operatorClassName, num1, num2);
                     }else {
+                        let numLength = num2.toString().length;
                         num2 = num2 * -1;
                         numString2 = parseFloat(num2);
-                        stringCombine = stringCombine.slice(0, (num2.toString().length * -1));
-                        stringCombine += ` ${num2}`;
+                        if(Math.sign(num2) === -1) {
+                            stringCombine = stringCombine.slice(0, (numLength * -1));
+                            stringCombine += `${num2}`;
+                            console.log(stringCombine);
+                            console.log(numLength);
+                        }else {
+                            stringCombine = stringCombine.slice(0, (numLength * -1));
+                            console.log(`length: ${numLength}`);
+                            console.log(stringCombine);
+                            stringCombine += `${num2}`;
+                        }
                         printBottom.textContent = stringCombine;
                         result = performOperations(operatorClassName, num1, num2);
                     }
@@ -183,7 +193,7 @@ function division(x, y) {
     return x / y;
 }
 
-
+//Generates the buttons for the calculator
 function topCalculator() {
     const clear = document.createElement("button");
     clear.classList.add("opSign", "clear");
