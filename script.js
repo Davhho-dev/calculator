@@ -120,7 +120,7 @@ numBtns.forEach((button) => {
                     }
                 }
             }
-            if(buttonType.includes("plus-minus")) {
+            if(buttonType.includes("plus-minus") && numSelected) {
                 if(waitSecOperand) {
                     num1 = num1 * -1;
                     stringCombine = num1;
@@ -154,7 +154,7 @@ numBtns.forEach((button) => {
                 } 
             }
         }
-        console.log(`numString1: ${numString1}; numString2: ${numString2}; num1: ${num1}; num2: ${num2}; stringCombine: ${stringCombine}; userOperator: ${userOperator}; operatorClassName: ${operatorClassName}; waitSecOperand: ${waitSecOperand}; result: ${result}; operatorCounter: ${operatorCounter}`);
+        // console.log(`numString1: ${numString1}; numString2: ${numString2}; num1: ${num1}; num2: ${num2}; stringCombine: ${stringCombine}; userOperator: ${userOperator}; operatorClassName: ${operatorClassName}; waitSecOperand: ${waitSecOperand}; result: ${result}; operatorCounter: ${operatorCounter}`);
     });
 });
 
