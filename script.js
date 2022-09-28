@@ -120,6 +120,29 @@ numBtns.forEach((button) => {
                     }
                 }
             }
+            if(buttonType.includes("plus-minus")) {
+                if(waitSecOperand) {
+                    num1 = num1 * -1;
+                    stringCombine = num1;
+                    numString1 = parseFloat(num1);
+                    printBottom.textContent = stringCombine;
+                }else {
+                    if(operatorCounter < 2) {
+                        num2 = num2 * -1;
+                        numString2 = parseFloat(num2);
+                        stringCombine = `${numString1} ${userOperator} ${numString2}`;
+                        printBottom.textContent = stringCombine;
+                        result = performOperations(operatorClassName, num1, num2);
+                    }else {
+                        num2 = num2 * -1;
+                        numString2 = parseFloat(num2);
+                        stringCombine = stringCombine.slice(0, (num2.toString().length * -1));
+                        stringCombine += ` ${num2}`;
+                        printBottom.textContent = stringCombine;
+                        result = performOperations(operatorClassName, num1, num2);
+                    }
+                } 
+            }
         }
         console.log(`numString1: ${numString1}; numString2: ${numString2}; num1: ${num1}; num2: ${num2}; stringCombine: ${stringCombine}; userOperator: ${userOperator}; operatorClassName: ${operatorClassName}; waitSecOperand: ${waitSecOperand}; result: ${result}; operatorCounter: ${operatorCounter}`);
     });
